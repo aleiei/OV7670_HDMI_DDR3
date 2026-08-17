@@ -1,0 +1,61 @@
+# Vivado project artifacts
+*.runs/
+*.gen/
+*.ip_user_files/
+*.hw/
+*.sim/
+*.cache/
+*.jou
+*.log
+runme.log
+runme.sh
+.Xil/
+
+# Generated bitstreams and boot files
+*.bit
+*.bin
+*.mcs
+*.prm
+*.ltx
+
+# Synthesis and implementation outputs
+*.edif
+*.edf
+*.ngc
+*.ncd
+*.twr
+*.twx
+*.rpt
+
+# IP core generated files
+*_stub.v
+*_stub.vhdl
+
+# Vivado project lock files
+*.xpr.lock
+*.xpr~
+*.xpr.bak
+
+# Incremental synthesis/implementation
+*.xise
+*.vvp
+*.vcd
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE files
+.vscode/
+.idea/
+
+# Patches directory
+patches/
+
+# Backup files
+*.bak
+*.backup
+*.orig

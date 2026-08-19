@@ -1057,10 +1057,16 @@ module async_fifo #(
             wr_ptr_bin  <= 0;
             wr_ptr_gray <= 0;
         end else if (wr_en && !full) begin
-            mem[wr_ptr_bin[ADDR_WIDTH-1:0]] <= din;
             wr_ptr_bin  <= wr_ptr_bin_next;
             wr_ptr_gray <= wr_ptr_gray_next;
         end
+    end
+    // BRAM write kept in its own always block, enabled ONLY by wr_en/full
+    // (no wr_rst term), so the inferred RAMB's WE control pin never traces
+    // back to an asynchronously-reset register (fixes DRC REQP-1839/1840).
+    always @(posedge wr_clk) begin
+        if (wr_en && !full)
+            mem[wr_ptr_bin[ADDR_WIDTH-1:0]] <= din;
     end
     assign full = (wr_ptr_gray_next == {~rd_ptr_gray_s2[ADDR_WIDTH:ADDR_WIDTH-1], rd_ptr_gray_s2[ADDR_WIDTH-2:0]});
 
@@ -1069,10 +1075,14 @@ module async_fifo #(
             rd_ptr_bin  <= 0;
             rd_ptr_gray <= 0;
         end else if (rd_en && !empty) begin
-            dout        <= mem[rd_ptr_bin[ADDR_WIDTH-1:0]];
             rd_ptr_bin  <= rd_ptr_bin_next;
             rd_ptr_gray <= rd_ptr_gray_next;
         end
+    end
+    // Same separation for the read port's ENARDEN control pin.
+    always @(posedge rd_clk) begin
+        if (rd_en && !empty)
+            dout <= mem[rd_ptr_bin[ADDR_WIDTH-1:0]];
     end
     assign empty = (rd_ptr_gray == wr_ptr_gray_s2);
 

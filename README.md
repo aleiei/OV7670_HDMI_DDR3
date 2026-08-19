@@ -414,15 +414,15 @@ write_cfgmem -format bin -disablebitswap -size 16 -interface spix4 \
 
 ### DRC Warnings (Non-Critical)
 
+**PLCK-12:** Poor IBUF-to-BUFG placement on `pclk` (camera pixel clock)
+- Cause: `pclk` is routed to a non clock-capable (CC) I/O pin on this board
+- Impact: None observed at runtime; `CLOCK_DEDICATED_ROUTE` override set to `FALSE` to allow implementation
+- Recommendation: Would require reassigning the camera clock to a CC-capable pin at the board level to fully eliminate
+
 **REQP-1709:** PLLE2_ADV buffer type mismatch (MIG IP core)
 - Cause: MIG's internal buffering configuration
 - Impact: None observed at runtime
 - Recommendation: Monitor in future builds; typical on certified IP
-
-**REQP-1839/1840:** Async BRAM control (ddr3_fb_bridge async FIFO)
-- Cause: Async reset on BRAM output enable (ui_clk_sync_rst gating)
-- Impact: Theoretical startup-time risk; no runtime symptoms observed
-- Recommendation: Monitor for video corruption on power-up; if seen, consider eliminating async FIFO reset or adding delay
 
 ### Warm-Start Failures (Resolved)
 
